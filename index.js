@@ -4,7 +4,7 @@ const moment = require("moment");
 const chalk = require("chalk");
 
 const { USERNAME, PASSWORD, DAYS_TO_LOOK_AHEAD } = process.env;
-const nextAvailableDate = moment().add(DAYS_TO_LOOK_AHEAD, "days");
+const nextAvailableDate = moment().add(DAYS_TO_LOOK_AHEAD || 14, "days");
 
 const formattedDate = nextAvailableDate.format("dddd, MMMM DD, YYYY");
 
@@ -40,7 +40,7 @@ async function start() {
     ),
   );
 
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
   const navigationPromise = page.waitForNavigation();
