@@ -1,14 +1,14 @@
 {
   "name": "book-tennis-court",
   "version": "1.0.0",
-  "description": "",
+  "description": "Notifies you of available Tennis Court Bookings on Building Link.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Tilo Mitra <tilomitra@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "chalk": "^2.4.2",
     "dotenv": "^8.0.0",
