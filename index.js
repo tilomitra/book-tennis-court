@@ -2,21 +2,31 @@ require("dotenv").config();
 const puppeteer = require("puppeteer");
 const moment = require("moment");
 const chalk = require("chalk");
+const twilio = require("twilio");
 
-const { USERNAME, PASSWORD, DAYS_TO_LOOK_AHEAD } = process.env;
+const {
+  USERNAME,
+  PASSWORD,
+  DAYS_TO_LOOK_AHEAD,
+  TWILIO_ACCOUNT_SID,
+  TWILIO_AUTH_TOKEN,
+  TWILIO_NUMBER,
+} = process.env;
+
+const smsClient = require("twilio")(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 const nextAvailableDate = moment().add(DAYS_TO_LOOK_AHEAD || 14, "days");
-
 const formattedDate = nextAvailableDate.format("dddd, MMMM DD, YYYY");
 
 let BEST_PLAYING_TIME = [
+  "7:30 PM - 8:30 PM",
+  "8:30 PM - 9:30 PM",
   "7:00 PM - 8:00 PM",
   "8:00 PM - 9:00 PM",
   "9:00 AM - 10:00 PM",
-  "7:30 PM - 8:30 PM",
-  "8:30 PM - 9:30 PM",
   "9:30 PM - 10:30 PM",
 ];
 
+let timesToBook = [];
 // If its a weekend, I have more available times.
 // const DAY_SATURDAY = 6;
 // const DAY_SUNDAY = 0;
@@ -40,7 +50,7 @@ async function start() {
     ),
   );
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
 
   const navigationPromise = page.waitForNavigation();
@@ -122,14 +132,25 @@ async function start() {
     console.log(t);
     if (BEST_PLAYING_TIME.indexOf(t) > -1) {
       isTimeAvailable = true;
+      timesToBook.push(t);
       console.log(`✅ ${chalk.green.bold(t)}`);
     }
   });
+
+  smsClient.messages
+    .create({
+      body: `I found available times for the tennis court on ${formattedDate}. ${availableTimes.join(
+        ", ",
+      )}`,
+      from: TWILIO_NUMBER,
+      to: "+16479198456",
+    })
+    .then(message => console.log("Sent message", message.sid));
+
   if (isTimeAvailable) {
     console.log(chalk.yellow("Better jump on those available times!"));
-  } else {
-    await browser.close();
   }
+  await browser.close();
 }
 
 start();
