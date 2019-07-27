@@ -16,5 +16,8 @@
     "node-cron": "^2.0.3",
     "puppeteer": "^1.18.1",
     "twilio": "^3.33.2"
+  },
+  "engines": {
+    "node": "10.16.0"
   }
 }
