@@ -1,6 +1,6 @@
 {
   "name": "book-tennis-court",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Notifies you of available Tennis Court Bookings on Building Link.",
   "main": "index.js",
   "scripts": {
