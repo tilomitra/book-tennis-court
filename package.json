@@ -12,7 +12,7 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "dotenv": "^8.0.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "node-cron": "^2.0.3",
     "puppeteer": "^1.18.1",
     "twilio": "^3.33.2"
